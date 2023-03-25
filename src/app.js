@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-
+require('./DB/connection')
 // giving the value or just using 5000 port
 const port = process.env.PORT || 3001;  
 
