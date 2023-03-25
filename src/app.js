@@ -32,6 +32,9 @@ app.post('/students',(req,res) => {
 app.get('/students',async (req,res)=>{
     try{
         const data = await Student.find()
+        if(!data)
+        res.status(200).send("No Data Found")
+        else
         res.status(200).send(data)
     }
     catch(e)
@@ -67,11 +70,26 @@ app.patch('/students/:id', async(req,res)=>{
        if(!updateStudent)
        res.status(404).send("Page Not Found");
        else
-       {
-        res.status(200).send("Record Updated Successfully.");
-       }
+       res.status(200).send("Record Updated Successfully.");
     }
     catch(e){
+        //  console.log(e)
+        res.status(500).send("Internal Server Error");
+    }
+})
+
+//Delete the student by id
+app.delete('/students/:id', async (req,res)=>{
+    try{
+        const _id = req.params.id;
+        const deleteStudent = await Student.findByIdAndDelete(_id)
+        if(!deleteStudent)
+        res.status(404).send("Page Not Found");
+        else
+        res.status(200).send("Record Deleted Successfully.");
+    }
+    catch(e){
+        //  console.log(e)
         res.status(500).send("Internal Server Error");
     }
 })
