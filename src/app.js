@@ -16,6 +16,18 @@ app.get('/',(req,res) => {
 
 //These all are RESTAPI, So Endpoint will be same and only Method will be different
 
+//Create Students Data  with PROMISES
+app.post('/students',(req,res) => {
+   // console.log('bodyData',req.body)
+   const incommingUser = new Student(req.body)
+   incommingUser.save().then(()=>{
+    res.status(200).send("User Created with details")
+   }).catch((e)=>{
+    res.status(400).send(e)
+   })
+})
+
+
 //Get all Students Data with ASYNC-AWAIT
 app.get('/students',async (req,res)=>{
     try{
@@ -44,15 +56,24 @@ app.get('/students/:id',async (req,res)=>{
     }
 })
 
-//Create Students Data  with PROMISES
-app.post('/students',(req,res) => {
-   // console.log('bodyData',req.body)
-   const incommingUser = new Student(req.body)
-   incommingUser.save().then(()=>{
-    res.status(200).send("User Created with details")
-   }).catch((e)=>{
-    res.status(400).send(e)
-   })
+// update the students by id
+app.patch('/students/:id', async(req,res)=>{
+    try{
+         //Get the unique id
+       const _id = req.params.id;
+       const updateStudent = await Student.findByIdAndUpdate(_id,req.body,{
+        new:true
+       })
+       if(!updateStudent)
+       res.status(404).send("Page Not Found");
+       else
+       {
+        res.status(200).send("Record Updated Successfully.");
+       }
+    }
+    catch(e){
+        res.status(500).send("Internal Server Error");
+    }
 })
 
 app.listen(port, ()=> {

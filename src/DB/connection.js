@@ -4,7 +4,8 @@ var mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost:27017/Students-RestApi',{
     useCreateIndex:true,
     useNewUrlParser:true,
-    useUnifiedTopology:true
+    useUnifiedTopology:true,
+    useFindAndModify:false
 }).then(()=>{                                   //.then is used when promise is resolved.
     console.log('DB connection is Successful')
 }).catch((e)=>{                                  //.catch is used when promise is rejected.
