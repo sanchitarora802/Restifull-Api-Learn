@@ -1,7 +1,7 @@
-var mongo = require('mongoose')
+var mongoose = require('mongoose')
 
 //connect function returns a promise, therefore we need to use promises.
-mongo.connect('mongodb://localhost:27017/Students-RestApi',{
+mongoose.connect('mongodb://localhost:27017/Students-RestApi',{
     useCreateIndex:true,
     useNewUrlParser:true,
     useUnifiedTopology:true
