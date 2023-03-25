@@ -33,36 +33,37 @@ router.get("/students", async (req, res) => {
   }
 });
 
-//Get single Student Data
-// router.get('/students/:id',async (req,res)=>{
-//     try{
-//        //Get the unique id
-//        const _id = req.params.id;
-//        const getStudent = await Student.findById(_id);
-//        if(!getStudent)
-//        res.status(404).send("Page Not Found");
-//        else
-//        res.status(200).send(getStudent);
-//     }catch(e){
-//       //  console.log(e)
-//         res.status(500).send("Internal Server Error");
-//     }
-// })
+// Get single Student Data
+router.get('/students/:id',async (req,res)=>{
+    try{
+       //Get the unique id
+       const _id = req.params.id;
+       const getStudent = await Student.findById(_id);
+       if(!getStudent)
+       res.status(404).send("Page Not Found");
+       else
+       res.status(200).send(getStudent);
+    }catch(e){
+      //  console.log(e)
+        res.status(500).send("Internal Server Error");
+    }
+})
 
-//Get single Student Data with Single query params 
+//Get Student Data with Single query params 
 router.get("/apiSingleQuery/students", async (req, res) => {
   try {
     const queryValue = req.query.name
+    // Adding the regex filter to match all the values basis on regex conditions.
     const getStudent = await Student.find({name:queryValue});
     if (!getStudent) res.status(404).send("Page Not Found");
     else res.status(200).send(getStudent);
   } catch (e) {
-    console.log(e)
+    //console.log(e)
     res.status(500).send("Internal Server Error");
   }
 });
 
-//Get single Student Data with Multiple query params 
+//Get Student Data with Multiple query params 
 router.get("/apiMultipleQuery/students", async (req, res) => {
 
     //Destructure the query and create an empty object
@@ -71,7 +72,7 @@ router.get("/apiMultipleQuery/students", async (req, res) => {
 
     //if the destructured value is their then add it to the object created and the complete object will be passed.
     if(name)
-    queryObj.name = name;
+    queryObj.name = {$regex:name, $options: 'i'}
 
     if(city)
     queryObj.city = city;
@@ -81,7 +82,7 @@ router.get("/apiMultipleQuery/students", async (req, res) => {
       if (!getStudent) res.status(404).send("Page Not Found");
       else res.status(200).send(getStudent);
     } catch (e) {
-      console.log(e)
+     console.log(e)
       res.status(500).send("Internal Server Error");
     }
   });
